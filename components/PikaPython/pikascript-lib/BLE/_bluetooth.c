@@ -90,7 +90,8 @@ int _bluetooth_BLE_init(PikaObj *self)
             ret = nvs_flash_init();
         }
         ESP_ERROR_CHECK(ret);
-        ret = nimble_port_init();
+        // ret = nimble_port_init();
+        nimble_port_init();
         if (ret != ESP_OK) {
             printf("Failed to init nimble %d \n", ret);
             return false;
@@ -275,10 +276,11 @@ int _bluetooth_BLE_gatts_register_svcs(PikaObj *self, PikaObj* services_info)
     service_count = pikaTuple_getSize(services_info);            //服务的个数,是不确定的
     printf("services_info service_count = %d\r\n",service_count);
     for (i = 0;i < service_count;i++){                           //对于每个服务
-        PikaObj* service = pikaTuple_getArg(services_info, i);     //读取服务
+    Arg* aService = pikaTuple_getArg(services_info, i);
+        PikaObj* oService =  arg_getObj(aService);    //读取服务
         printf("TYPE %d\r\n",pikaTuple_getType(services_info,i));
 
-        service_count = pikaTuple_getSize(service);            //服务的个数,是不确定的
+        service_count = pikaTuple_getSize(oService);            //服务的个数,是不确定的
         printf("services_info service_count = %d\r\n",service_count);
 
         // PikaObj* service_UUID = pikaTuple_getStr(service,0);
